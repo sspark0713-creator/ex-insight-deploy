@@ -1,4 +1,6 @@
 {
-  "name": "ex-insight",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/", "destination": "/EX_Insight_20260625.html" }
+  ]
 }
