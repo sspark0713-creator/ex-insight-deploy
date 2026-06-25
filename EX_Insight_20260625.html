@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EX Insight — 2026-06-25 (Thu)</title>
+<style>
+:root {
+  --bg:      #EEF2F7;
+  --surface: #FFFFFF;
+  --border:  #DDE4EE;
+  --text:    #1E2D3D;
+  --dim:     #6B7E90;
+  --muted:   #A0B0BF;
+  --bright:  #0D1B2A;
+  --up:      #1A7A44;
+  --dn:      #C0392B;
+  --fl:      #7A8FA0;
+  --blue:    #1558D6;
+  --gold:    #B8860B;
+  --mono:    'Consolas','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;font-size:13px;line-height:1.55;padding:14px;max-width:1400px;margin:0 auto}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+.up{color:var(--up)} .dn{color:var(--dn)} .fl{color:var(--fl)} .dim{color:var(--muted)} .na{color:var(--muted);font-size:16px}
+.hdr{background:#fff;border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:0 0 8px 8px;padding:13px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hdr-brand{display:flex;align-items:center;gap:12px}
+.brand-dot{width:34px;height:34px;background:linear-gradient(135deg,#1558D6,#0EA5E9);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.brand-name{font-size:18px;font-weight:700;color:var(--bright);letter-spacing:-.02em}
+.brand-sub{font-size:10px;color:var(--dim);letter-spacing:.07em;text-transform:uppercase;margin-top:1px}
+.hdr-right{text-align:right}
+.hdr-date{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--bright)}
+.hdr-update{font-size:11px;color:var(--dim);margin-top:2px}
+.hdr-mode{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:3px;background:rgba(21,88,214,.08);color:var(--blue);border:1px solid rgba(21,88,214,.2);margin-top:4px}
+.sec{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding-bottom:7px;border-bottom:2px solid var(--border);margin-bottom:10px}
+.idx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.idx-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.idx-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border)}
+.idx-card.is-up::before{background:var(--up)} .idx-card.is-dn::before{background:var(--dn)}
+.idx-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.idx-val{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--bright);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.idx-chg{margin-top:5px;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;align-items:start}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;align-items:start}
+.col-stack{display:flex;flex-direction:column;gap:10px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-h{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);background:#FAFBFD}
+.card-h .ttl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.card-h .sub{font-size:10px;color:var(--muted)}
+.card-b{padding:12px 14px}
+.chart-wrap{width:100%;padding:4px 0} canvas{display:block;width:100%}
+.bond-summary{margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.bond-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.dtbl{width:100%;border-collapse:collapse}
+.dtbl th{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:5px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.dtbl td{padding:6px 8px;font-size:12px;border-bottom:1px solid #F0F4F8;font-variant-numeric:tabular-nums}
+.dtbl tr:last-child td{border-bottom:none}
+.dtbl .nr{font-family:var(--mono);text-align:right} .dtbl .nm{color:var(--bright);font-weight:500}
+.news-section{margin-bottom:8px}
+.news-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.nc-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #F3F6FA}
+.nc-row:last-child{border-bottom:none}
+.nc-num{font-size:11px;color:var(--muted);font-family:var(--mono);width:16px;text-align:right;flex-shrink:0}
+.ntag{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.03em;text-transform:uppercase;flex-shrink:0}
+.t-bond{background:#EBF2FF;color:#1558D6} .t-eq{background:#E8F5E9;color:#1A7A44}
+.t-fx{background:#FFF8E1;color:#8B6914} .t-mac{background:#F3E8FF;color:#6B21A8} .t-glb{background:#FEE8E8;color:#B91C1C}
+.nc-title{flex:1;font-size:12px;color:var(--bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nc-title:hover{color:var(--blue)}
+.nc-src{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.empty-msg{color:var(--muted);font-size:12px;padding:8px 0}
+.weekly-banner{background:linear-gradient(135deg,rgba(21,88,214,.07),rgba(21,88,214,.02));border:1px solid rgba(21,88,214,.18);border-radius:8px;padding:11px 16px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.wb-icon{font-size:20px} .wb-main{font-size:13px;font-weight:700;color:var(--blue)} .wb-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.wrow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #F0F4F8}
+.wrow:last-child{border-bottom:none}
+.wrow-name{font-size:12px;color:var(--bright);font-weight:500}
+.wrow-vals{display:flex;align-items:center;gap:18px}
+.wrow-val{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;color:var(--dim);min-width:70px;text-align:right}
+.wrow-chg{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;min-width:90px;text-align:right}
+.links-card a{display:block;padding:5px 0;font-size:13px;color:var(--blue);border-bottom:1px solid #F3F6FA}
+.links-card a:last-child{border-bottom:none} .links-card a:hover{color:#0D3DA8}
+.footnote{margin-top:16px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="brand-dot">EX</div>
+    <div>
+      <div class="brand-name">EX Insight</div>
+      <div class="brand-sub">Daily Market Monitor</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-date">2026-06-25 (Thu)</div>
+    <div class="hdr-update">14:32 KST 자동 수집</div>
+    <div class="hdr-mode">일간 모니터</div>
+  </div>
+</div>
+
+<div class="sec">국내외 주식시장 — 전일 종가</div>
+<div class="idx-grid">
+        <div class="idx-card is-up">
+          <div class="idx-label">KOSPI</div>
+          <div class="idx-val">8,969</div>
+          <div class="idx-chg"><span class="up">▲ 497.51 (+5.87%)</span></div>
+        </div>
+        <div class="idx-card is-dn">
+          <div class="idx-label">KOSDAQ</div>
+          <div class="idx-val">888.34</div>
+          <div class="idx-chg"><span class="dn">▼ 20.97 (-2.31%)</span></div>
+        </div>
+        <div class="idx-card is-dn">
+          <div class="idx-label">S&amp;P 500</div>
+          <div class="idx-val">7,358</div>
+          <div class="idx-chg"><span class="dn">▼ 7.24 (-0.10%)</span></div>
+        </div>
+        <div class="idx-card is-dn">
+          <div class="idx-label">NASDAQ</div>
+          <div class="idx-val">25,477</div>
+          <div class="idx-chg"><span class="dn">▼ 110.40 (-0.43%)</span></div>
+        </div></div>
+
+<div class="sec">채권시장 — 국채금리 최근 6개월 추이</div>
+<div class="g2" style="margin-bottom:14px;">
+  <div class="card">
+    <div class="card-h"><span class="ttl">미국 국채 (UST)</span><span class="sub">FRED 기준 · 최근 6개월</span></div>
+    <div class="card-b">
+      <div class="chart-wrap"><canvas id="ust-chart"></canvas></div>
+      <div class="bond-summary">
+        <div class="bond-lbl">현재 금리 (전일 대비)</div>
+        <table class="dtbl"><thead><tr><th>만기</th><th class="nr">금리</th><th class="nr">일간 변동</th></tr></thead><tbody><tr><td class="nm">미국 2Y</td><td class="nr">4.160%</td><td class="nr"><span class="dn">▼ 8.0bp</span></td></tr><tr><td class="nm">미국 5Y</td><td class="nr">4.270%</td><td class="nr"><span class="dn">▼ 2.0bp</span></td></tr><tr><td class="nm">미국 10Y</td><td class="nr">4.500%</td><td class="nr"><span class="dn">▼ 1.0bp</span></td></tr><tr><td class="nm">미국 30Y</td><td class="nr">4.940%</td><td class="nr"><span class="dn">▼ 1.0bp</span></td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h"><span class="ttl">한국 국채 (KTB)</span><span class="sub">BOK ECOS · 최근 6개월</span></div>
+    <div class="card-b">
+      <div class="chart-wrap"><canvas id="ktb-chart"></canvas></div>
+      <div class="bond-summary">
+        <div class="bond-lbl">현재 금리 (전일 대비)</div>
+        <table class="dtbl"><thead><tr><th>만기</th><th class="nr">금리</th><th class="nr">일간 변동</th></tr></thead><tbody><tr><td class="nm">한국 3Y</td><td class="nr">3.710%</td><td class="nr"><span class="dn">▼ 0.7bp</span></td></tr><tr><td class="nm">한국 5Y</td><td class="nr">3.897%</td><td class="nr"><span class="dn">▼ 0.8bp</span></td></tr><tr><td class="nm">한국 10Y</td><td class="nr">4.071%</td><td class="nr"><span class="dn">▼ 3.9bp</span></td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="g2" style="margin-bottom:14px;">
+  <div class="card">
+    <div class="card-h"><span class="ttl">외환시장</span><span class="sub">전일 기준</span></div>
+    <div class="card-b"><table class="dtbl"><thead><tr><th>통화쌍</th><th class="nr">현재</th><th class="nr">등락</th></tr></thead><tbody><tr><td class="nm">USD/KRW</td><td class="nr">1,542.67</td><td class="nr"><span class="up">▲ 7.42</span>&nbsp;<span class="dim">|</span>&nbsp;<span class="up">▲ 0.48%</span></td></tr><tr><td class="nm">DXY</td><td class="nr">101.52</td><td class="nr"><span class="dn">▼ 0.09</span>&nbsp;<span class="dim">|</span>&nbsp;<span class="dn">▼ 0.08%</span></td></tr><tr><td class="nm">EUR/USD</td><td class="nr">1.14</td><td class="nr"><span class="dn">▼ 0.00</span>&nbsp;<span class="dim">|</span>&nbsp;<span class="dn">▼ 0.11%</span></td></tr><tr><td class="nm">USD/JPY</td><td class="nr">161.75</td><td class="nr"><span class="up">▲ 0.15</span>&nbsp;<span class="dim">|</span>&nbsp;<span class="up">▲ 0.09%</span></td></tr></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><span class="ttl">기타 지수·상품</span></div>
+    <div class="card-b"><table class="dtbl"><thead><tr><th>항목</th><th class="nr">현재</th><th class="nr">등락률</th></tr></thead><tbody><tr><td class="nm">Dow Jones</td><td class="nr">51,849</td><td class="nr"><span class="up">▲ 0.35%</span></td></tr><tr><td class="nm">Nikkei</td><td class="nr">72,272</td><td class="nr"><span class="up">▲ 4.48%</span></td></tr><tr><td class="nm">WTI 원유</td><td class="nr">$69.45</td><td class="nr"><span class="dn">▼ 1.27%</span></td></tr><tr><td class="nm">금</td><td class="nr">$4,008.20</td><td class="nr"><span class="up">▲ 0.45%</span></td></tr></tbody></table></div>
+  </div>
+</div>
+
+<div class="g2" style="margin-bottom:14px;">
+  <div class="card">
+    <div class="card-h"><span class="ttl">주요 뉴스 TOP 10</span><span class="sub">한국 증시 5 + 미국 증시 5</span></div>
+    <div class="card-b"><div class="news-section"><div class="news-hdr">한국 증시</div><div class="nc-row">
+              <span class="nc-num">1</span>
+              <span class="ntag t-eq">주식</span>
+              <a href="https://www.yna.co.kr/view/AKR20260625106200008" target="_blank" rel="noopener" class="nc-title">OCI &quot;계열사 오씨아이스페셜티 주식 352억원에 취득&quot;</a>
+              <span class="nc-src">연합뉴스</span>
+            </div><div class="nc-row">
+              <span class="nc-num">2</span>
+              <span class="ntag t-glb">글로벌</span>
+              <a href="https://www.yna.co.kr/view/AKR20260625077900004" target="_blank" rel="noopener" class="nc-title">강북구, 경비원·요양보호사 양성교육 참여자 모집</a>
+              <span class="nc-src">연합뉴스</span>
+            </div><div class="nc-row">
+              <span class="nc-num">3</span>
+              <span class="ntag t-glb">글로벌</span>
+              <a href="https://www.yna.co.kr/view/AKR20260625101500052" target="_blank" rel="noopener" class="nc-title">김해 택시 기본요금, 내달 1일부터 4천원→4천600원으로 인상</a>
+              <span class="nc-src">연합뉴스</span>
+            </div></div><div class="news-section"><div class="news-hdr">미국 증시</div><div class="nc-row">
+              <span class="nc-num">1</span>
+              <span class="ntag t-glb">글로벌</span>
+              <a href="https://www.cnbc.com/2026/06/25/iran-navy-shipping-recovery-strait-of-hormuz-unauthorized-routes-us-fragile-mou-.html" target="_blank" rel="noopener" class="nc-title">Iran declares new Hormuz route &#x27;unacceptable and dangerous,&#x27; warns again…</a>
+              <span class="nc-src">CNBC</span>
+            </div><div class="nc-row">
+              <span class="nc-num">2</span>
+              <span class="ntag t-eq">주식</span>
+              <a href="https://www.cnbc.com/2026/06/25/chip-tech-stocks-sk-hynix-nasdaq-adr-listing-29-billion-ai-investment.html" target="_blank" rel="noopener" class="nc-title">SK Hynix surges 12% after Micron earnings; blockbuster Nasdaq listing</a>
+              <span class="nc-src">CNBC</span>
+            </div><div class="nc-row">
+              <span class="nc-num">3</span>
+              <span class="ntag t-glb">글로벌</span>
+              <a href="https://www.cnbc.com/2026/06/25/venezuela-earthquakes-casualties-trump-pledges-support-aids-oil-.html" target="_blank" rel="noopener" class="nc-title">Trump pledges rapid U.S. response for Venezuela after historic earthquak…</a>
+              <span class="nc-src">CNBC</span>
+            </div><div class="nc-row">
+              <span class="nc-num">4</span>
+              <span class="ntag t-glb">글로벌</span>
+              <a href="https://www.marketwatch.com/story/tesla-and-waymo-are-chasing-the-robotaxi-dream-but-the-company-spending-the-most-to-win-builds-no-cars-at-all-0d8682b9?mod=mw_rss_topstories" target="_blank" rel="noopener" class="nc-title">Tesla and Waymo duel in the robotaxi race — but the company spending the…</a>
+              <span class="nc-src">MarketWatch</span>
+            </div><div class="nc-row">
+              <span class="nc-num">5</span>
+              <span class="ntag t-eq">주식</span>
+              <a href="https://www.marketwatch.com/story/why-sk-hynixs-30-billion-u-s-listing-could-be-a-double-edged-sword-for-microns-stock-f4483b0d?mod=mw_rss_topstories" target="_blank" rel="noopener" class="nc-title">Why SK Hynix’s $30 billion U.S. listing could be a double-edged sword fo…</a>
+              <span class="nc-src">MarketWatch</span>
+            </div></div></div>
+  </div>
+  <div class="card links-card">
+    <div class="card-h"><span class="ttl">주요 링크</span></div>
+    <div class="card-b">
+      <a href="https://investing.com/economic-calendar/" target="_blank" rel="noopener">▸ Investing.com 경제 캘린더</a>
+      <a href="https://finance.naver.com/news/mainnews.naver" target="_blank" rel="noopener">▸ 네이버 금융 주요 뉴스</a>
+      <a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener">▸ 한국은행 경제통계시스템 (ECOS)</a>
+      <a href="https://www.bok.or.kr/portal/bbs/P0002353/list.do?menuNo=200690" target="_blank" rel="noopener">▸ 한국은행 보도자료</a>
+      <a href="https://freesis.kofia.or.kr/" target="_blank" rel="noopener" style="color:var(--gold);">▸ KOFIA FreeRasis (채권금리)</a>
+      <a href="https://fred.stlouisfed.org/graph/?g=1kBY1" target="_blank" rel="noopener">▸ FRED 미국채 수익률곡선</a>
+      <a href="https://www.federalreserve.gov/releases/h15/" target="_blank" rel="noopener">▸ 미 연준 H.15 금리 데이터</a>
+    </div>
+  </div>
+</div>
+
+<div class="sec">주간 동향 — 직전 금요일 (06/19(Fri)) 대비 현재</div>
+<div class="weekly-banner">
+  <div class="wb-icon">📋</div>
+  <div>
+    <div class="wb-main">EX Insight 주간 브리핑 참고 자료</div>
+    <div class="wb-sub">직전 금요일 종가 대비 등락 — 매주 월요일 사내게시판 EX Insight 작성 참고용</div>
+  </div>
+</div>
+<div class="g3">
+  <div class="card">
+    <div class="card-h"><span class="ttl">주식·환율</span><span class="sub">전주 금요일 대비</span></div>
+    <div class="card-b"><div class="wrow">
+          <span class="wrow-name">KOSPI</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">8,969</span>
+            <span class="wrow-chg"><span class="dn">▼ 0.92%</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">KOSDAQ</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">888.08</span>
+            <span class="wrow-chg"><span class="dn">▼ 8.12%</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">S&amp;P 500</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">7,358</span>
+            <span class="wrow-chg"><span class="dn">▼ 0.99%</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">NASDAQ</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">25,477</span>
+            <span class="wrow-chg"><span class="dn">▼ 1.59%</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">USD/KRW</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">1,535.25</span>
+            <span class="wrow-chg"><span class="dn">▼ 0.15%</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">DXY</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">101.52</span>
+            <span class="wrow-chg"><span class="up">▲ 1.78%</span></span>
+          </div>
+        </div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><span class="ttl">미국 국채 (UST)</span><span class="sub">전주 금요일 대비 bp</span></div>
+    <div class="card-b"><div class="wrow">
+          <span class="wrow-name">UST 2Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">4.160</span>
+            <span class="wrow-chg"><span class="dn">▼ 3.0bp</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">UST 5Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">4.270</span>
+            <span class="wrow-chg"><span class="up">▲ 4.0bp</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">UST 10Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">4.500</span>
+            <span class="wrow-chg"><span class="up">▲ 4.0bp</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">UST 30Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">4.940</span>
+            <span class="wrow-chg"><span class="up">▲ 4.0bp</span></span>
+          </div>
+        </div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><span class="ttl">한국 국채 (KTB)</span><span class="sub">전주 금요일 대비 bp</span></div>
+    <div class="card-b"><div class="wrow">
+          <span class="wrow-name">KTB 3Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">3.710</span>
+            <span class="wrow-chg"><span class="dn">▼ 7.4bp</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">KTB 5Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">3.897</span>
+            <span class="wrow-chg"><span class="dn">▼ 10.8bp</span></span>
+          </div>
+        </div><div class="wrow">
+          <span class="wrow-name">KTB 10Y</span>
+          <div class="wrow-vals">
+            <span class="wrow-val">4.071</span>
+            <span class="wrow-chg"><span class="dn">▼ 10.0bp</span></span>
+          </div>
+        </div></div>
+  </div>
+</div>
+
+<div class="footnote">
+  <span>데이터: Yahoo Finance · FRED (미연준) · BOK ECOS · RSS | 생성: 2026-06-25 14:32</span>
+  <span>본 자료는 자동 수집 참고용이며 투자 권유가 아닙니다.</span>
+</div>
+
+<script>
+
+function drawYieldChart(id, data, colors) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  function render() {
+    var W = canvas.parentElement.clientWidth || 560;
+    var H = 200;
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    var mats  = Object.keys(data.series || {});
+    var dates = data.dates || [];
+    var nPts  = dates.length;
+    var PAD   = {t:14, r:82, b:28, l:44};
+    var cW = W - PAD.l - PAD.r, cH = H - PAD.t - PAD.b;
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,W,H);
+    if (!nPts) {
+      ctx.fillStyle='#94A3B8'; ctx.font='12px system-ui'; ctx.textAlign='center';
+      ctx.fillText('데이터 수집 중 — BOK API 확인 필요', W/2, H/2); return;
+    }
+    var mn=Infinity, mx=-Infinity;
+    mats.forEach(function(m){
+      (data.series[m]||[]).forEach(function(v){if(v!=null&&!isNaN(v)){mn=Math.min(mn,v);mx=Math.max(mx,v);}});
+    });
+    if(!isFinite(mn)){mn=0;mx=1;}
+    var rng=mx-mn||0.1; mn-=rng*0.04; mx+=rng*0.18;
+    var xS=function(i){return PAD.l+(i/Math.max(nPts-1,1))*cW;};
+    var yS=function(val){return PAD.t+cH-((val-mn)/(mx-mn))*cH;};
+    for(var t=0;t<=4;t++){
+      var y=PAD.t+(t/4)*cH; var yv=mx-(t/4)*(mx-mn);
+      ctx.strokeStyle='#EEF2F7'; ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();
+      ctx.fillStyle='#9AAABB'; ctx.font='10px Consolas,monospace'; ctx.textAlign='right';
+      ctx.fillText(yv.toFixed(2)+'%',PAD.l-4,y+3.5);
+    }
+    ctx.strokeStyle='#D4DCE8'; ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(PAD.l,PAD.t+cH);ctx.lineTo(W-PAD.r,PAD.t+cH);ctx.stroke();
+    var shown={};
+    ctx.fillStyle='#9AAABB'; ctx.font='10px Consolas,monospace'; ctx.textAlign='center';
+    for(var i=0;i<nPts;i++){
+      var d=new Date(dates[i]); var key=d.getFullYear()+'-'+d.getMonth();
+      if(!shown[key]){shown[key]=true;
+        var lbl=(d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0');
+        ctx.fillText(lbl,xS(i),PAD.t+cH+16);}
+    }
+    mats.forEach(function(mat){
+      var vals=data.series[mat]||[]; var color=colors[mat]||'#666';
+      ctx.strokeStyle=color; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+      ctx.beginPath(); var started=false;
+      for(var i=0;i<vals.length;i++){
+        var val=vals[i]; if(val==null||isNaN(val)){started=false;continue;}
+        var x=xS(i),y=yS(val);
+        if(!started){ctx.moveTo(x,y);started=true;}else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      var li=vals.length-1;
+      while(li>=0&&(vals[li]==null||isNaN(vals[li])))li--;
+      if(li>=0){
+        var lx=xS(li),ly=yS(vals[li]);
+        ctx.fillStyle=color; ctx.beginPath();ctx.arc(lx,ly,3.5,0,Math.PI*2);ctx.fill();
+        ctx.font='bold 10px Consolas,monospace'; ctx.textAlign='left';
+        ctx.fillText(mat+' '+vals[li].toFixed(2)+'%',lx+6,ly+4);
+      }
+    });
+  }
+  render();
+  var timer; window.addEventListener('resize',function(){clearTimeout(timer);timer=setTimeout(render,80);});
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var UST = {"dates": ["2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23"], "series": {"2Y": [3.55, 3.51, 3.46, 3.43, 3.45, 3.47, 3.54, 3.51, 3.49, 3.52, 3.56, 3.57, 3.61, 3.54, 3.52, 3.52, 3.51, 3.48, 3.49, 3.46, 3.48, 3.44, 3.48, 3.47, 3.46, 3.45, 3.45, 3.47, 3.47, 3.46, 3.47, 3.47, 3.49, 3.54, 3.54, 3.53, 3.51, 3.56, 3.59, 3.6, 3.6, 3.61, 3.6, 3.56, 3.53, 3.56, 3.53, 3.52, 3.57, 3.57, 3.57, 3.47, 3.5, 3.48, 3.45, 3.52, 3.47, 3.4, 3.43, 3.47, 3.47, 3.48, 3.43, 3.43, 3.45, 3.42, 3.38, 3.47, 3.51, 3.54, 3.57, 3.56, 3.56, 3.57, 3.64, 3.76, 3.73, 3.68, 3.68, 3.76, 3.79, 3.88, 3.83, 3.9, 3.84, 3.96, 3.88, 3.82, 3.79, 3.81, 3.79, 3.84, 3.84, 3.81, 3.79, 3.78, 3.81, 3.78, 3.76, 3.76, 3.78, 3.71, 3.72, 3.78, 3.79, 3.83, 3.78, 3.78, 3.84, 3.92, 3.88, 3.88, 3.95, 3.93, 3.87, 3.92, 3.9, 3.95, 4.0, 3.98, 4.0, 4.09, 4.07, 4.13, 4.04, 4.08, 4.13, 4.01, 4.0, 3.99, 3.98, 4.05, 4.05, 4.08, 4.05, 4.17, 4.15, 4.13, 4.13, 4.05, 4.09, 4.07, 4.05, 4.2, 4.19, 4.24, 4.16], "10Y": [4.1, 4.06, 4.04, 4.01, 4.0, 4.02, 4.09, 4.09, 4.06, 4.11, 4.14, 4.17, 4.18, 4.13, 4.14, 4.19, 4.18, 4.15, 4.16, 4.12, 4.16, 4.17, 4.18, 4.15, 4.14, 4.12, 4.14, 4.18, 4.19, 4.17, 4.18, 4.15, 4.19, 4.18, 4.19, 4.18, 4.15, 4.17, 4.24, 4.3, 4.26, 4.26, 4.24, 4.22, 4.24, 4.26, 4.24, 4.26, 4.29, 4.28, 4.29, 4.21, 4.22, 4.22, 4.16, 4.18, 4.09, 4.04, 4.05, 4.09, 4.08, 4.08, 4.03, 4.04, 4.05, 4.02, 3.97, 4.05, 4.06, 4.09, 4.13, 4.15, 4.12, 4.15, 4.21, 4.27, 4.28, 4.23, 4.2, 4.26, 4.25, 4.39, 4.34, 4.39, 4.33, 4.42, 4.44, 4.35, 4.3, 4.33, 4.31, 4.35, 4.34, 4.33, 4.29, 4.29, 4.31, 4.3, 4.26, 4.29, 4.32, 4.26, 4.26, 4.3, 4.3, 4.34, 4.31, 4.35, 4.36, 4.42, 4.4, 4.39, 4.45, 4.43, 4.36, 4.41, 4.38, 4.42, 4.46, 4.46, 4.47, 4.59, 4.61, 4.67, 4.57, 4.57, 4.56, 4.5, 4.48, 4.45, 4.45, 4.47, 4.46, 4.49, 4.47, 4.55, 4.56, 4.53, 4.55, 4.45, 4.48, 4.47, 4.43, 4.49, 4.46, 4.51, 4.5]}};
+  var KTB = {"dates": ["2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-04", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-22", "2026-06-23", "2026-06-24"], "series": {"3Y": [2.908, 2.872, 2.904, 2.902, 2.895, 3.013, 2.991, 3.045, 3.022, 3.041, 3.025, 2.994, 3.034, 3.084, 3.095, 3.101, 3.093, 3.0, 2.999, 2.996, 2.967, 3.01, 2.999, 2.963, 2.939, 2.958, 2.939, 2.952, 2.953, 2.935, 2.933, 2.948, 2.91, 2.902, 2.942, 2.98, 3.003, 2.996, 3.09, 3.08, 3.13, 3.191, 3.138, 3.109, 3.137, 3.096, 3.094, 3.067, 3.106, 3.138, 3.152, 3.189, 3.212, 3.204, 3.233, 3.267, 3.224, 3.2, 3.154, 3.142, 3.178, 3.143, 3.154, 3.158, 3.124, 3.062, 3.041, 3.18, 3.223, 3.189, 3.227, 3.42, 3.283, 3.253, 3.271, 3.338, 3.3, 3.324, 3.261, 3.329, 3.41, 3.617, 3.523, 3.558, 3.552, 3.582, 3.542, 3.552, 3.37, 3.477, 3.448, 3.432, 3.451, 3.315, 3.338, 3.36, 3.382, 3.339, 3.328, 3.34, 3.371, 3.348, 3.33, 3.365, 3.458, 3.496, 3.492, 3.529, 3.525, 3.595, 3.615, 3.595, 3.546, 3.569, 3.598, 3.674, 3.635, 3.654, 3.766, 3.757, 3.751, 3.76, 3.753, 3.736, 3.664, 3.711, 3.766, 3.731, 3.79, 3.773, 3.858, 3.882, 3.94, 3.856, 3.881, 3.904, 3.808, 3.744, 3.717, 3.71, 3.75, 3.784, 3.81, 3.77, 3.772], "5Y": [3.115, 3.076, 3.107, 3.099, 3.084, 3.197, 3.176, 3.233, 3.211, 3.246, 3.229, 3.198, 3.239, 3.302, 3.336, 3.361, 3.35, 3.259, 3.244, 3.227, 3.196, 3.24, 3.245, 3.242, 3.211, 3.24, 3.226, 3.24, 3.24, 3.239, 3.249, 3.244, 3.185, 3.163, 3.192, 3.212, 3.242, 3.24, 3.324, 3.32, 3.389, 3.472, 3.43, 3.397, 3.42, 3.382, 3.377, 3.357, 3.395, 3.436, 3.448, 3.495, 3.533, 3.505, 3.521, 3.555, 3.494, 3.462, 3.423, 3.397, 3.426, 3.391, 3.405, 3.41, 3.38, 3.314, 3.278, 3.424, 3.477, 3.442, 3.472, 3.652, 3.508, 3.47, 3.496, 3.556, 3.556, 3.578, 3.511, 3.587, 3.621, 3.837, 3.755, 3.786, 3.801, 3.838, 3.796, 3.777, 3.567, 3.679, 3.622, 3.594, 3.622, 3.475, 3.49, 3.511, 3.554, 3.519, 3.516, 3.536, 3.58, 3.568, 3.541, 3.562, 3.652, 3.683, 3.676, 3.718, 3.706, 3.78, 3.797, 3.786, 3.737, 3.748, 3.777, 3.87, 3.853, 3.887, 4.016, 3.99, 3.972, 3.973, 3.985, 3.963, 3.901, 3.95, 3.992, 3.924, 3.996, 3.969, 4.078, 4.12, 4.19, 4.102, 4.07, 4.08, 3.971, 3.917, 3.905, 3.897, 3.949, 4.005, 4.044, 4.016, 4.014], "10Y": [3.325, 3.271, 3.289, 3.264, 3.251, 3.351, 3.344, 3.387, 3.346, 3.368, 3.376, 3.358, 3.401, 3.453, 3.371, 3.378, 3.409, 3.325, 3.313, 3.324, 3.312, 3.342, 3.359, 3.379, 3.345, 3.374, 3.354, 3.385, 3.385, 3.386, 3.396, 3.398, 3.354, 3.341, 3.386, 3.392, 3.412, 3.418, 3.493, 3.488, 3.565, 3.653, 3.602, 3.558, 3.59, 3.544, 3.53, 3.518, 3.557, 3.607, 3.603, 3.661, 3.712, 3.687, 3.71, 3.754, 3.681, 3.639, 3.618, 3.571, 3.588, 3.54, 3.578, 3.593, 3.556, 3.47, 3.446, 3.594, 3.632, 3.589, 3.616, 3.739, 3.629, 3.608, 3.649, 3.701, 3.68, 3.692, 3.606, 3.693, 3.736, 3.879, 3.835, 3.859, 3.865, 3.915, 3.891, 3.879, 3.689, 3.804, 3.747, 3.725, 3.754, 3.628, 3.66, 3.686, 3.715, 3.658, 3.655, 3.675, 3.717, 3.688, 3.655, 3.697, 3.791, 3.817, 3.82, 3.861, 3.843, 3.923, 3.932, 3.932, 3.888, 3.909, 3.95, 4.056, 4.044, 4.085, 4.217, 4.239, 4.21, 4.198, 4.174, 4.128, 4.073, 4.102, 4.147, 4.068, 4.174, 4.135, 4.229, 4.254, 4.348, 4.273, 4.273, 4.3, 4.195, 4.118, 4.11, 4.071, 4.118, 4.171, 4.195, 4.171, 4.171]}};
+  drawYieldChart('ust-chart', UST, {'2Y':'#1565C0','10Y':'#AD1457'});
+  drawYieldChart('ktb-chart', KTB, {'3Y':'#1B5E20','5Y':'#006064','10Y':'#E65100'});
+});
+</script>
+</body>
+</html>
